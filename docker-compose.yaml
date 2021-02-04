@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  db:
+    image: neo4j
+    ports:
+      - 7474:7474
+      - 7687:7687
+    environment:
+      - NEO4JLABS_PLUGINS=["apoc"]
+      - NEO4J_AUTH=none
+    volumes:
+      - $HOME/neo4j/data:/data
+  postgres:
+    image: postgres:13.0-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: gcpviz
