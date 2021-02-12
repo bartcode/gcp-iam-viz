@@ -1,16 +1,9 @@
 from neomodel import (
     StructuredNode,
     StringProperty,
-    RelationshipFrom,
     StructuredRel,
-    One,
-    RelationshipTo,
+    RelationshipFrom,
 )
-
-
-class Project(StructuredNode):
-    name = StringProperty(unique_index=True)
-    resources = RelationshipFrom("Resource", "PARENT")
 
 
 class ProjectRelation(StructuredRel):
@@ -26,16 +19,14 @@ class PolicyBinding(StructuredRel):
     scope = StringProperty()
 
 
-class Resource(StructuredNode):
-    display_name = StringProperty()
+class Project(StructuredNode):
     name = StringProperty(unique_index=True)
+    displayName = StringProperty()
+    assetUrl = StringProperty()
     description = StringProperty()
-    asset_type = StringProperty()
+    assetType = StringProperty()
     location = StringProperty()
-    project = RelationshipFrom(
-        "Project", "CONTAINS", model=ProjectRelation, cardinality=One
-    )
-    members = RelationshipTo("Member", "HAS_POLICY", model=PolicyBinding)
+    members = RelationshipFrom(Member, "HAS_POLICY", model=PolicyBinding)
 
 
 # Project -> Policies
