@@ -22,6 +22,7 @@ setup(
     install_requires=[
         "setuptools>=45.0",
         "google-cloud-asset~=2.2",
+        "google-cloud-storage~=1.36",
         "neomodel~=4.0",
         "pyyaml~=5.4",
     ],
