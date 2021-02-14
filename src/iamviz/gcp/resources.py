@@ -2,8 +2,9 @@ import logging
 from typing import Type, Dict
 
 from google.cloud import asset
-from iamviz.gcp.mappings import strip_asset_type
 from neomodel import db, clear_neo4j_database, StructuredNode
+
+from iamviz.gcp.mappings import strip_asset_type
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +20,13 @@ def clear_resources() -> None:
 def get_project_resource(
     client: asset.AssetServiceClient, asset_types: Dict[str, type], scope: str
 ) -> Type[StructuredNode]:
+    """
+    Retrieve project node separately.
+    :param client: AssetServiceClient
+    :param asset_types: Dictionary with all available assets.
+    :param scope: Scope
+    :return: Project node.
+    """
     logger.info("Searching for Project node.")
     projects = client.search_all_resources(
         scope=scope, asset_types=["cloudresourcemanager.googleapis.com/Project"]
@@ -46,6 +54,14 @@ def save_all_resources(
     project: Type[StructuredNode],
     scope: str,
 ) -> Dict[str, Type[StructuredNode]]:
+    """
+    Search for all resources in the scope and link them to the project.
+    :param client: AssetServiceClient
+    :param asset_types: Dictionary with all available assets.
+    :param project: Project node.
+    :param scope: Scope
+    :return: Project node.
+    """
     logger.info("Searching all resources within scope %s.", scope)
 
     results: Dict[str, Type[StructuredNode]] = {}

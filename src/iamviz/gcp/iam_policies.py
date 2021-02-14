@@ -1,10 +1,11 @@
+"""Methods to determine applied IAM policies."""
 import logging
 from typing import Dict, Type
 
 from google.cloud import asset
+from neomodel import StructuredNode
 
 from iamviz.gcp.model import Member
-from neomodel import StructuredNode
 
 logger = logging.getLogger(__name__)
 
@@ -14,6 +15,13 @@ def save_all_iam_policies(
     resources: Dict[str, Type[StructuredNode]],
     scope: str,
 ) -> None:
+    """
+    Search for all IAM policies given a certain scope.
+    :param client: AssetServiceClient.
+    :param resources: Dictionary with all resources available within the scope.
+    :param scope: Scope to search.
+    :return: None
+    """
     logger.info("Searching all IAM policies within scope %s.", scope)
 
     for policy in client.search_all_iam_policies(scope=scope):

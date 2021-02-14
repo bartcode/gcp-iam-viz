@@ -1,9 +1,11 @@
+"""Methods that help save Storage IAM policies."""
 import logging
 from typing import Type
 
 from google.cloud import storage
-from iamviz.gcp.model import Member
 from neomodel import StructuredNode
+
+from iamviz.gcp.model import Member
 
 logger = logging.getLogger(__name__)
 
@@ -11,6 +13,13 @@ logger = logging.getLogger(__name__)
 def save_storage_iam_policies(
     project: str, model: Type[StructuredNode], scope: str
 ) -> None:
+    """
+    Retrieve all buckets and their respective IAM policies.
+    :param project: Project node
+    :param model: Model to use for saving the bucket nodes.
+    :param scope: Scope
+    :return: None
+    """
     client = storage.Client(project=project)
     buckets = [b for b in client.list_buckets()]
 
