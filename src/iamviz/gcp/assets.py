@@ -1,3 +1,6 @@
+"""
+Methods that handle retrieval of asset types from GCP.
+"""
 import logging
 from pathlib import Path
 from typing import Dict
@@ -15,6 +18,11 @@ logger = logging.getLogger(__name__)
 
 
 def get_gcp_asset_models() -> Dict[str, type]:
+    """
+    Retrieve all searchable assets from a GCP documentation page. This
+    page is subsequently cached - as it's fairly static.
+    :return: Dictionary with the name of the model as a key and the class as value.
+    """
     cache_path = Path(
         _resource_dir,
         pkg_resources.resource_filename(_resource_dir, "cache/asset_types.tmp.html"),

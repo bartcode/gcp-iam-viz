@@ -1,3 +1,4 @@
+"""GCP IAM Viz helps to visualise IAM policies in Neo4j. This is the entrypoint of the CLI."""
 import argparse
 import logging
 import os
@@ -20,6 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 def main():
+    """Entrypoint method which runs the (very small) ETL pipeline."""
     parser = argparse.ArgumentParser(description="GCP IAM loader.")
     parser.add_argument(
         "--project_id",
@@ -41,14 +43,25 @@ def main():
 
     client = asset.AssetServiceClient()
 
-    clear_resources(scope)
+    # Clear database. (Yes, this is ugly.)
+    clear_resources()
 
     logger.info("Scope: %s", scope)
+    # Determine which asset types are available.
+    # Models will be created for all of them.
     asset_types = get_gcp_asset_models()
 
+    # Create project node.
     project = get_project_resource(client, asset_types, scope)
+
+    # Save all resources and list them under the project node.
     resources = save_all_resources(client, asset_types, project, scope)
+
+    # Save all IAM policies.
     save_all_iam_policies(client, resources, scope)
+
+    # Since policies on Google Cloud Storage are not properly available,
+    # use the Cloud Storage API to retrieve IAM policies.
     save_storage_iam_policies(
         project=os.path.basename(scope),
         model=asset_types["storageBucket"],

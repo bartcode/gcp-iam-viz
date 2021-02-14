@@ -25,6 +25,8 @@ setup(
         "google-cloud-storage~=1.36",
         "neomodel~=4.0",
         "pyyaml~=5.4",
+        "beautifulsoup4~=4.9",
+        "requests~=2.25",
     ],
     entry_points={
         "console_scripts": [

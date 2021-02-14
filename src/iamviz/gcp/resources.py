@@ -8,8 +8,11 @@ from neomodel import db, clear_neo4j_database, StructuredNode
 logger = logging.getLogger(__name__)
 
 
-def clear_resources(scope: str) -> None:
-    logger.info("Clearing resources linked to scope %s", scope)
+def clear_resources() -> None:
+    """
+    Clear entire database.
+    :return: None
+    """
     clear_neo4j_database(db)
 
 
